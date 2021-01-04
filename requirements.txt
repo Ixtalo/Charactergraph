@@ -1,0 +1,6 @@
+docopt
+beautifulsoup4
+nltk
+ebooklib
+numpy
+matplotlib
