@@ -1,0 +1,16 @@
+## stopwords: one line for each word to ignore
+Sir
+Mr.
+Aye
+ye
+Thou
+Sperm
+Sperm Whale
+Nay
+cook
+
+Master
+Living
+Guild
+Higher
+Hanko

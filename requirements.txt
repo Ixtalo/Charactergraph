@@ -1,6 +1,12 @@
 docopt
+pylint
+
 beautifulsoup4
-nltk
-ebooklib
+
 numpy
 matplotlib
+
+ebooklib
+
+nltk
+spacy
