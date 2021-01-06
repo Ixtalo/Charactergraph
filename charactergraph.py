@@ -51,6 +51,7 @@ import logging
 import os
 import re
 import sys
+import typing
 from codecs import open  # pylint: disable=W0622
 from collections import Counter
 from io import StringIO
@@ -114,11 +115,11 @@ class Charactergraph:
         self.stopwords_ignore_case = stopwords_ignore_case
         if stopwords_file:
             logging.info("Loading stopwords from '%s' ...", os.path.abspath(stopwords_file))
-            self.stopwords = self.read_file_lines(stopwords_file, lowercase=stopwords_ignore_case)
+            self.stopwords = set(self.read_file_lines(stopwords_file, lowercase=stopwords_ignore_case))
             logging.info("#%d stop words", len(self.stopwords))
         if ner_names_file:
             logging.info("Loading NER extra names from '%s' ...", os.path.abspath(ner_names_file))
-            self.ner_names = self.read_file_lines(ner_names_file, lowercase=False)
+            self.ner_names = set(self.read_file_lines(ner_names_file, lowercase=False))
             logging.info("#%d extra names for NER", len(self.ner_names))
 
     @staticmethod
@@ -128,11 +129,14 @@ class Charactergraph:
         Commented lines (starting with '#') are ignored.
         :param filename text file name/path
         :param lowercase: convert words to lowercase
+        :return list of lines
         """
+        if not filename or not os.path.isfile(filename):
+            raise ValueError('Illegal filename!')
         filepath = filename
         if not os.path.isabs(filepath):
             filepath = os.path.abspath(os.path.join(SCRIPT_DIR, filename))
-        result = set()
+        result = []
         for line in open(filepath):
             line = line.strip()
             if line.startswith('#'):
@@ -140,20 +144,30 @@ class Charactergraph:
             if lowercase:
                 line = line.lower()
             if line:
-                result.add(line)
+                result.append(line)
         return result
 
     @staticmethod
-    def segment_text(text: str, segment_size: int, separator: str = ' '):
+    def segment_text(text: str, segment_size: int, separator: chr = ' '):
         """
         Partition or segment a text considering the separator character.
         A typical text should not be divided in the middle of a word but between words,
         i.e., considering spaces.
         """
+        if not isinstance(segment_size, int) or segment_size < 1:
+            raise ValueError("segment_size must be a number > 1!")
+        if separator not in text:
+            raise ValueError("Separator '%s' not in text!" % separator)
+
+        ## needed, otherwise rpartition does not work on last piece
+        if text[-1] != separator:
+            text += separator
+
         i = 0
         while i < len(text):
+            piece = text[i:i + segment_size]
             ## partition into (before, separator, after)
-            before, _, after = text[i:i + segment_size].rpartition(separator)
+            before, _, after = piece.rpartition(separator)
             ## increase position by segment_size but reduce by the length of the rest
             i += segment_size - len(after)
             ## right strip any remaining separator
@@ -174,7 +188,7 @@ class Charactergraph:
         return text.getvalue()
 
     @staticmethod
-    def replace_space_underscore_fornames(text: str, ner_names: set):
+    def replace_space_underscore_fornames(text: str, ner_names: typing.Iterable):
         """
         Because of tokenization spaces need to be replaced.
         """
@@ -187,7 +201,7 @@ class Charactergraph:
         return text
 
     @staticmethod
-    def get_most_frequent_items_inorder(items: list, top_n: int):
+    def get_most_frequent_items_inorder(items: typing.Iterable, top_n: int):
         """
         For a list of items return the top N most frequent retaining the original item-order.
         """
@@ -208,7 +222,7 @@ class Charactergraph:
         return items_chronologically
 
     @staticmethod
-    def names_to_rulepatterns(names: list):
+    def names_to_rulepatterns(names: typing.Iterable):
         """
         Translate a list of names into Spacey NER EntityRuler patterns.
         """
@@ -220,7 +234,7 @@ class Charactergraph:
         return patterns
 
     @staticmethod
-    def get_person_names(text, ner_names: set = None, stopwords: set = None):
+    def get_person_names(text, ner_names: typing.Iterable = None, stopwords: typing.Iterable = None):
         """
         Using NLP find all PERSON named-entities in the given *text*.
         Additional NER rules can be given by *ner_names*.

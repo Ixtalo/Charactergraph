@@ -1,5 +1,6 @@
 docopt
 pylint
+pytest
 
 beautifulsoup4
 
