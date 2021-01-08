@@ -278,7 +278,7 @@ class Charactergraph:
         ## find all person names which are not in the stoplist
         names = []
         for i, segment in enumerate(segments):
-            logging.debug("NLP for book segment %d/%d...", i + 1, ceil(len(text) / float(segment_size)))
+            logging.info("NLP for book segment %d/%d...", i + 1, ceil(len(text) / float(segment_size)))
             doc = nlp(segment)
             names += [ent.text for ent in doc.ents if
                       ent.label_ == 'PERSON' and ent.text.lower() not in stopwords_lower]

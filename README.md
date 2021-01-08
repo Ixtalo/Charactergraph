@@ -6,11 +6,11 @@ For e-book files create **'charactergrams'** as a graphical representation of no
 
 > [-gram](https://en.wiktionary.org/wiki/-gram): Something written, drawn or otherwise recorded. From Ancient Greek suffix -γραμμα (-gramma), from γράμμα (grámma, “written character, letter, that which is drawn”). [Source: [Wiktionary.org](https://en.wiktionary.org/wiki/-gram#Etymology)]
 
-![Charactergram Moby Dick](examples/CharactergramMelvilleMobyDick.png)  
-Figure: example charactergram for Moby Dick.
+![Charactergram Moby Dick](examples/Charactergram_Melville_MobyDick.png)  
+Figure 1: example charactergram for Moby Dick.
 
-![Charactergram Hamilton The Dreaming Void](examples/CharactergramHamiltonDreamingVoid.png)  
-Figure: example charactergram for the sci-fi novel [The Dreaming Void](https://en.wikipedia.org/wiki/Void_Trilogy) by
+![Charactergram Hamilton The Dreaming Void](examples/Charactergram_Hamilton_DreamingVoid.png)  
+Figure 2: example charactergram for the sci-fi novel [The Dreaming Void](https://en.wikipedia.org/wiki/Void_Trilogy) by
 Peter F. Hamilton.
 
 ## Motivation
@@ -81,6 +81,13 @@ The NLP Python libraries being used are [NLTK](https://www.nltk.org) and [Spacy]
    `source venv/bin/activate`
 3. Run:
    `python3 charactergraph.py INPUT.epub --output=OUTPUT.png`
+
+
+## Links
+
+### Public Domain EPUB
+- https://www.goodreads.com/shelf/show/public-domain
+
 
 ## License
 
