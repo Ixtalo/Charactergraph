@@ -65,9 +65,9 @@ from bs4 import BeautifulSoup
 from docopt import docopt
 from ebooklib import epub
 
-__version__ = "1.3.0"
+__version__ = "1.3.1"
 __date__ = "2021-01-04"
-__updated__ = "2021-01-06"
+__updated__ = "2021-02-07"
 __author__ = "Ixtalo"
 __email__ = "ixtalo@gmail.com"
 __license__ = "AGPL-3.0+"
@@ -250,7 +250,7 @@ class Charactergraph:
 
         ## load Spacy models, i.e., tokenizer, tagger, parser, NER and word vectors
         ## `python -m spacy download en_core_web_sm`
-        logging.info("Spacy: %s", spacy.cli_info(silent=True))
+        logging.info("Spacy: %s", spacy.cli.info(silent=True))
         try:
             nlp = spacy.load(SPACY_LANGUAGE_MODEL)
         except IOError:
