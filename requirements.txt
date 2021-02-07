@@ -1,6 +1,8 @@
 docopt
+
 pylint
 pytest
+pytest-cov
 
 beautifulsoup4
 
